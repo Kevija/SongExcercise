@@ -62,10 +62,32 @@
 
   class Song(title: String = "", author: String= "", lyrics:Seq[String]) {
     println(s" Enjoy - $author -  song: $title!")
+    println(s"The songs has ${lyrics.length} lines")
 
     def sing(): Unit = {
       println(s"$author - $title")
-      println(lyrics.mkString(","))
+      for (line <-lyrics)
+      println(line)
+      //println(lyrics.mkString(","))
+    }
+
+    def yell(): Song = {
+      for (line <- lyrics) {
+        println(line.toUpperCase())
+      }
+      this
+    }
+
+    def rap(): Song = {
+      for (line <-lyrics)
+        println(line)
+      this
+    }
+
+    def whisper(maxLines: Int): Unit = {
+      val numLines = if (maxLines == -1) lyrics.length else maxLines
+      for (line <- lyrics.take(numLines))
+        println(line)
     }
   }
 
@@ -80,14 +102,16 @@
         "Chorando estará ao lembrar de um amor",
         "Que um dia não soube cuidar",
         "A recordação vai estar com ele aonde for",
-        "A recordação vai estar pra sempre aonde for"))
+        "A recordação vai estar pra sempre aonde for",
+        "..."))
 
     val jingleBells = new Song("Jingle Bells",
       "James Pierpont",
       Array("Jingle bells, jingle bells",
         "Jingle all the way",
         "Oh what fun it is to ride",
-        "In a one-horse open sleigh, hey!"))
+        "In a one-horse open sleigh, hey!",
+        "..."))
 
     val journey = new Song("Don't Stop Believin'", "Journey",
       Seq("Just a small town girl",
@@ -95,15 +119,36 @@
         "She took the midnight train goin' anywhere",
         "Just a city boy",
         "Born and raised in south Detroit",
-        "He took the midnight train goin' anywhere", "..."))
+        "He took the midnight train goin' anywhere",
+        "..."))
 
 
     jingleBells.sing()
 
-    lambada.sing()
+   lambada.yell()
 
     journey.sing()
 
+    lambada.whisper(2)
 
-}
+    lambada.yell().rap().whisper(1)
+
+  }
+    class Rap(title: String, author: String, lyrics: Seq[String])
+      extends Song(title: String, author: String, lyrics: Seq[String]) {
+
+      def dropIt(drop: String, maxLines: Int = -1): Unit = {
+        println(s"Dropping some beats with $drop on $title")
+      }
+
+      val myRap = new Rap("Zemenes", "Apvadceļš", Array("Kopš bērnu dienām Tevi zinu es",
+        "Mēs gandrīz katru dienu bijām kopā", "Gan uz skolas sola, gan uz tāfeles",
+        "Kā mācēju es rakstu Tavu vārdu"))
+
+      myRap.sing()
+      myRap.yell()
+      myRap.whisper(2)
+      myRap.dropIt("OH, YEAH")
+
+  }
 
